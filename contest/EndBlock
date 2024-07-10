@@ -1,0 +1,8 @@
+{{ block title }}
+    End Block
+{{ endblock }}
+
+{{ block content }}
+
+    {{ next_button }}
+{{ endblock }}
