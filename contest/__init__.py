@@ -10,8 +10,9 @@ Your app description
 class C(BaseConstants):
     NAME_IN_URL = 'contest'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 5
+    NUM_ROUNDS = 2
     ENDOWMENT= 20
+    COST_PER_TICKET= {1:1, 2:2}
     PRIZE=20
 
 
@@ -59,12 +60,18 @@ class Player(BasePlayer):
 
  def setup(self):
      self.endowment=C.ENDOWMENT
-     self.cost_per_ticket=C.COST_PER_TICKET
+     self.cost_per_ticket=C.COST_PER_TICKET[self.id_in_group]
+@property
+def coplayer(self):
+    return self.get_others_in_group()[0]
 
 
 # PAGES
 class Intro(Page):
-    pass
+   @staticmethod
+   def is_displayed(player):
+       return player.round_number ==1
+
 
 
 class SetupRound(WaitPage):
@@ -89,10 +96,17 @@ class WaitForDecision(Page):
           group.determine_outcomes()
 
 class Results(Page):
-    pass
+     @staticmethod
+     def vars_for_template(player):
+         return{
+             'other_id': player.get_others_in_group()[0].id_in_subsession,
+             'other_choice': player.get_others_in_group()[0].tickets_purchased,
+         }
 
 class EndBlock(Page):
-    pass
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number==C.NUM_ROUNDS
 
 page_sequence = [
     Intro,
