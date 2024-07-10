@@ -13,14 +13,19 @@ class C(BaseConstants):
     ENDOWMENT= 20
 
 
+
 class Subsession(BaseSubsession):
     is_paid=models.BooleanField()
 
     def setup(self):
         self.is_paid=(self.round_number==1)
+        for group in self.get_groups():
+            group.setup()
 
 class Group(BaseGroup):
-    pass
+   def setup(self):
+       for player in self.get_players():
+           player.setup()
 
 
 class Player(BasePlayer):
@@ -30,8 +35,10 @@ class Player(BasePlayer):
     is_winner=models.BooleanField()
     earnings=models.IntegerField()
 
- def creating_session(subsession):
-    subsession.setup()
+ def setup(self):
+     self.endowment=C.ENDOWMENT
+     self.cost_per_ticket=C.COST_PER_TICKET
+
 
 # PAGES
 class Intro(Page):
@@ -39,7 +46,9 @@ class Intro(Page):
 
 
 class SetupRound(WaitPage):
-    pass
+   wait_for_all_groups = TRUE
+    @staticmethod
+    def after_all_players_arrive(group):
 
 
 class Decision(Page):
