@@ -15,6 +15,10 @@ SESSION_CONFIGS = [
         ],
         num_demo_participants=3,
     ),
+    dict(
+        name="Contest Development"
+    )
+
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
