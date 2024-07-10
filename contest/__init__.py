@@ -48,11 +48,16 @@ class Intro(Page):
 class SetupRound(WaitPage):
    wait_for_all_groups = TRUE
     @staticmethod
-    def after_all_players_arrive(group):
+    def after_all_players_arrive(subsession):
+        subsession(setup)
 
 
 class Decision(Page):
-    pass
+    form_model = 'player'
+
+    @staticmethod
+    def get_form_fields(player):
+        return ["tickets_purchased"]
 
 class WaitForDecision(Page):
     pass
