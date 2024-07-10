@@ -17,6 +17,7 @@ SESSION_CONFIGS = [
     ),
     dict(
         name="Contest Development"
+        app_sequence=["contest"]
     )
 
 ]
